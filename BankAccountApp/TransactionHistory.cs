@@ -9,36 +9,55 @@ namespace BankAccountApp
             _transactions = new List<(string, double)>();
         }
 
-        // type nem lehet null/üres, amount > 0
         public void AddTransaction(string type, double amount)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(type))
+                throw new ArgumentException("A tranzakció típusa nem lehet null vagy üres.");
+            if (amount <= 0)
+                throw new ArgumentException("A tranzakció összege csak pozitív szám lehet.");
+
+            _transactions.Add((type, amount));
         }
 
         public int GetTransactionCount()
         {
-            throw new NotImplementedException();
+            return _transactions.Count;
         }
 
-        // Formátum: "Deposit: 100.00" — null ha nincs tranzakció
         public string? GetLastTransaction()
         {
-            throw new NotImplementedException();
+            if (_transactions.Count == 0)
+                return null;
+
+            var last = _transactions[_transactions.Count - 1];
+            return $"{last.Type}: {last.Amount:F2}";
         }
 
         public double GetTotalDeposited()
         {
-            throw new NotImplementedException();
+            double total = 0;
+            foreach (var t in _transactions)
+            {
+                if (t.Type == "Deposit")
+                    total += t.Amount;
+            }
+            return total;
         }
 
         public double GetTotalWithdrawn()
         {
-            throw new NotImplementedException();
+            double total = 0;
+            foreach (var t in _transactions)
+            {
+                if (t.Type == "Withdrawal")
+                    total += t.Amount;
+            }
+            return total;
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            _transactions.Clear();
         }
     }
 }
