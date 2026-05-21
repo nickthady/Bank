@@ -1,0 +1,5 @@
+.vs/ 
+BankAccountApp/.vs/ 
+BankAccountApp/obj/ 
+BankAccountAppTests/obj/ 
+BankAccountAppTests/bin/ 

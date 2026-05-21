@@ -6,43 +6,69 @@ namespace BankAccountApp
         private readonly string _owner;
         private readonly TransactionHistory _history;
 
-        // owner nem lehet null/üres, initialBalance nem lehet negatív
         public BankAccount(string owner, double initialBalance = 0)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(owner))
+                throw new ArgumentException("A tulajdonos neve nem lehet null vagy üres.");
+            if (initialBalance < 0)
+                throw new ArgumentException("A kezdeti egyenleg nem lehet negatív.");
+
+            _owner = owner;
+            _balance = initialBalance;
+            _history = new TransactionHistory();
         }
 
         public string GetOwner()
         {
-            throw new NotImplementedException();
+            return _owner;
         }
 
         public double GetBalance()
         {
-            throw new NotImplementedException();
+            return _balance;
         }
 
-        // Visszatér false ha amount <= 0
         public bool Deposit(double amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0)
+                return false;
+
+            _balance += amount;
+            _history.AddTransaction("Deposit", amount);
+            return true;
         }
 
-        // Visszatér false ha amount <= 0 vagy nincs elég fedezet
         public bool Withdraw(double amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0)
+                return false;
+            if (amount > _balance)
+                return false;
+
+            _balance -= amount;
+            _history.AddTransaction("Withdrawal", amount);
+            return true;
         }
 
-        // Visszatér false ha target null, amount érvénytelen, vagy nincs fedezet
         public bool Transfer(BankAccount target, double amount)
         {
-            throw new NotImplementedException();
+            if (target == null)
+                return false;
+            if (amount <= 0)
+                return false;
+            if (amount > _balance)
+                return false;
+
+            _balance -= amount;
+            target._balance += amount;
+            _history.AddTransaction("Transfer Out", amount);
+            target._history.AddTransaction("Transfer In", amount);
+            return true;
         }
 
         public TransactionHistory GetHistory()
         {
-            throw new NotImplementedException();
+            return _history;
         }
     }
 }
